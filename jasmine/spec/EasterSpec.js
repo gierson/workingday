@@ -3,15 +3,11 @@ describe("Easter Day", function() {
   var year;
   var month;
   var workingDay;
-  var noWorkingDay;
 
   beforeEach(function() {
     easterDay = new Date(2017, 3, 16);
     year = 2017;
     month = 5;
-    workingDay = '2017-06-12';
-    holiday = '2017-05-01';
-    weekendDay = '2017-02-11';
   });
 
   it("should give a easter date", function() {
@@ -28,19 +24,32 @@ describe("Easter Day", function() {
 
   it("Should return true if give a working day.", function () {
 
-    expect(workingday.isWorkingDay(workingDay)).toEqual(true);
+    expect(workingday.isWorkingDay(2017,5,16)).toEqual(true);
+
+  });
+  it("Should return true if give a working day.", function () {
+
+    expect(workingday.isWorkingDay(2017,4,8)).toEqual(true);
 
   });
 
   it("Should return false if give a holiday day.", function () {
 
-    expect(workingday.isWorkingDay(holiday)).toEqual(false);
+    expect(workingday.isWorkingDay(2017,4,1)).toEqual(false);
 
   });
 
   it("Should return false if give a weekend day.", function () {
 
-    expect(workingday.isWorkingDay(weekendDay)).toEqual(false);
+    expect(workingday.isWorkingDay(2017,5,17)).toEqual(false);
+
+  });
+
+  it("Should return true if give a saturday width setting.workWeekNumber to 6 .", function () {
+
+    workingday.settings.workWeekNumber = 6;
+
+    expect(workingday.isWorkingDay(2017,5,17)).toEqual(true);
 
   });
 

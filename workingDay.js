@@ -10,28 +10,45 @@
     lib.version = '0.0.1';
 
     lib.settings = {
-        // regular no working day's 2017 in Poland:
-        // 01.01     (niedziela)	    Nowy Rok, Świętej Bożej Rodzicielki
-        // 06.01     (piątek)	        Trzech Króli (Objawienie Pańskie)
-        // 01.05     (poniedziałek)	Święto Pracy
-        // 03.05     (Środa)	        Święto Konstytucji 3 Maja
-        // 15.18     (wtorek)	        Święto Wojska Polskiego, Wniebowzięcie Najświętszej Maryi Panny
-        // 01.11     (Środa)	        Wszystkich Świętych
-        // 11.11     (sobota)	        Święto Niepodległości
-        // 25.12     (poniedziałek)	Boże Narodzenie (pierwszy dzień)
-        // 26.12     (wtorek)	        Boże Narodzenie (drugi dzień)
+        workWeekNumber: 5,
+
+        // defaultPermanentHolidays: [],
         defaultPermanentHolidays: [{
-            month: 0,
-            day: 1
-        },
-        {
-            month: 5,
-            day: 6
-        },
-        {
-            month: 4,
-            day: 1
-        }
+                month: 0,
+                day: 1
+            },
+            {
+                month: 0,
+                day: 6
+            },
+            {
+                month: 4,
+                day: 1
+            },
+            {
+                month: 4,
+                day: 3
+            },
+            {
+                month: 7,
+                day: 15
+            },
+            {
+                month: 10,
+                day: 1
+            },
+            {
+                month: 10,
+                day: 11
+            },
+            {
+                month: 11,
+                day: 25
+            },
+            {
+                month: 11,
+                day: 26
+            }
         ],
         defaultMovingHolidays: []      //Polish moving holidays
     };
@@ -58,21 +75,32 @@
         var n0 = (h + l + 7 * m + 114)
         var n = Math.floor(n0 / 31) - 1;
         var p = n0 % 31 + 1;
-        var date = new Date(year,n,p);
-        return date;
+        return new Date(year,n,p);
     };
 
     // Should return true if given date is a working day.
     lib.isWorkingDay = function(year, month, day) {
+        var date = new Date(year, month, day);
+        var workWeekNumber = this.settings.workWeekNumber;
+        var permanentHolidays = this.settings.defaultPermanentHolidays;
+
         if(!Date.parse(year, month, day)) {
             return false;
-        } else
+        }
+        console.log(workWeekNumber);
+        if(date.getDay() <= workWeekNumber && date.getDay() > 0) {
+            var detected = false;
+            permanentHolidays.forEach(function(holiday) {
+                if(holiday.month === month && holiday.day === day) {
+                    detected = true;
+                }
+            });
 
-            return true;
+            return !detected;
+
+        } else return false;
 
     };
-
-
 
     root.workingday = lib;
     root.helpers = helpers;
