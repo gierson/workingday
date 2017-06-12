@@ -4,10 +4,10 @@
 
 (function (root, undefined) {
 
-    var lib = {},
-        helpers = {};
+    var lib = {};
+    var helpers = {};
 
-    lib.version = '0.0.1';
+    lib.version = "0.0.1";
 
     lib.settings = {
         workWeekNumber: 5,
@@ -85,7 +85,7 @@
         var permanentHolidays = this.settings.defaultPermanentHolidays;
 
         if(!Date.parse(year, month, day)) {
-            return false;
+            throw new TypeError('Bad input date');
         }
         console.log(workWeekNumber);
         if(date.getDay() <= workWeekNumber && date.getDay() > 0) {
