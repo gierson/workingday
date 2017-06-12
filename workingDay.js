@@ -49,8 +49,7 @@
                 month: 11,
                 day: 26
             }
-        ],
-        defaultMovingHolidays: []      //Polish moving holidays
+        ]
     };
 
 
@@ -72,25 +71,47 @@
         var k = c % 4;
         var l = (32 + 2 * e + 2 * i - h - k) % 7;
         var m = Math.floor((a + 11 * h + 22 * l) / 451);
-        var n0 = (h + l + 7 * m + 114)
+        var n0 = (h + l + 7 * m + 114);
         var n = Math.floor(n0 / 31) - 1;
         var p = n0 % 31 + 1;
         return new Date(year,n,p);
     };
 
+    // * easterForYear(2017)++           17.04     (poniedziałek)	Poniedziałek Wielkanocny
+    // * easterForYear(2017) + 50day     04.06     (niedziela)	    Zesłanie Ducha Świętego (Zielone Świątki)
+    // * easterForYear(2017) + 60day     15.06     (czwartek)	    Boże Ciało
+
+    helpers.generateMovingHolidays = function(year) {
+        var add = [0, 1, 49, 60];
+        var holidays = [];
+        var easterDay = lib.easter(year);
+
+       // easter.setDate(easter.getDate() + 1);
+        for(var i = 0; i < add.length; i++) {
+            var easter = new Date(easterDay);
+            easter.setDate(easterDay.getDate() + add[i]);
+            holidays.push({month: easter.getMonth(), day: easter.getDate()})
+            //return easter;
+        }
+        return holidays;
+    };
     // Should return true if given date is a working day.
     lib.isWorkingDay = function(year, month, day) {
         var date = new Date(year, month, day);
         var workWeekNumber = this.settings.workWeekNumber;
         var permanentHolidays = this.settings.defaultPermanentHolidays;
+        var movingHolidays = helpers.generateMovingHolidays(year);
+        var offDays = [];
+
+        offDays.push.apply(offDays, permanentHolidays);
+        offDays.push.apply(offDays, movingHolidays);
 
         if(!Date.parse(year, month, day)) {
             throw new TypeError('Bad input date');
         }
-        console.log(workWeekNumber);
         if(date.getDay() <= workWeekNumber && date.getDay() > 0) {
             var detected = false;
-            permanentHolidays.forEach(function(holiday) {
+            offDays.forEach(function(holiday) {
                 if(holiday.month === month && holiday.day === day) {
                     detected = true;
                 }
@@ -99,6 +120,18 @@
             return !detected;
 
         } else return false;
+
+    };
+
+    lib.getLastWorkDayOfMonth = function(year, month) {
+        var daysInMont = helpers.getNumbersOfDaysInMonth(year, month);
+        for(var i = daysInMont; i >= 1; i--) {
+            console.log(i);
+            if(this.isWorkingDay(year, month, i)) {
+                console.log(month);
+                return new Date(year, month, i);
+            }
+        }
 
     };
 

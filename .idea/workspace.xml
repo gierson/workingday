@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="235023d2-a496-4871-9066-9453de4f8aee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Readme.md" afterPath="$PROJECT_DIR$/Readme.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jasmine/spec/EasterSpec.js" afterPath="$PROJECT_DIR$/jasmine/spec/EasterSpec.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workingDay.js" afterPath="$PROJECT_DIR$/workingDay.js" />
     </list>
     <ignored path="WorkDay.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,21 +30,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Readme.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Readme.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Readme.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="459">
-              <caret line="27" column="2" lean-forward="false" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
+              <caret line="27" column="70" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="27" selection-end-column="70" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="workingDay.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="workingDay.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/workingDay.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="57" column="50" lean-forward="true" selection-start-line="57" selection-start-column="50" selection-end-line="57" selection-end-column="50" />
+            <state relative-caret-position="206">
+              <caret line="100" column="57" lean-forward="false" selection-start-line="100" selection-start-column="57" selection-end-line="100" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -62,8 +63,8 @@
       <file leaf-file-name="EasterSpec.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/jasmine/spec/EasterSpec.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+            <state relative-caret-position="648">
+              <caret line="67" column="93" lean-forward="true" selection-start-line="67" selection-start-column="93" selection-end-line="67" selection-end-column="93" />
               <folding />
             </state>
           </provider>
@@ -107,9 +108,9 @@
         <option value="$PROJECT_DIR$/jasmine/spec/easter.js" />
         <option value="$PROJECT_DIR$/jasmine/SpecRunner.html" />
         <option value="$PROJECT_DIR$/jasmine/spec/HelpersSpec.js" />
+        <option value="$PROJECT_DIR$/Readme.md" />
         <option value="$PROJECT_DIR$/jasmine/spec/EasterSpec.js" />
         <option value="$PROJECT_DIR$/workingDay.js" />
-        <option value="$PROJECT_DIR$/Readme.md" />
       </list>
     </option>
   </component>
@@ -282,7 +283,7 @@
       <workItem from="1497202690744" duration="90000" />
       <workItem from="1497213729617" duration="6726000" />
       <workItem from="1497220890588" duration="163000" />
-      <workItem from="1497265011222" duration="3660000" />
+      <workItem from="1497265011222" duration="12829000" />
     </task>
     <task id="LOCAL-00001" summary="first">
       <created>1497202008577</created>
@@ -312,11 +313,18 @@
       <option name="project" value="LOCAL" />
       <updated>1497269825727</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="isWorkingDay method">
+      <created>1497269912717</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1497269912717</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22181000" />
+    <option name="totallyTimeSpent" value="31350000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -390,7 +398,9 @@
     <option name="LAST_COMMIT_MESSAGE" value="isWorkingDay method" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -585,6 +595,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="70" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="27" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/jasmine/spec/HelpersSpec.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -593,26 +611,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workingDay.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="57" column="50" lean-forward="true" selection-start-line="57" selection-start-column="50" selection-end-line="57" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/jasmine/spec/EasterSpec.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+        <state relative-caret-position="648">
+          <caret line="67" column="93" lean-forward="true" selection-start-line="67" selection-start-column="93" selection-end-line="67" selection-end-column="93" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Readme.md">
+    <entry file="file://$PROJECT_DIR$/workingDay.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="2" lean-forward="false" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
+        <state relative-caret-position="206">
+          <caret line="100" column="57" lean-forward="false" selection-start-line="100" selection-start-column="57" selection-end-line="100" selection-end-column="57" />
           <folding />
         </state>
       </provider>
