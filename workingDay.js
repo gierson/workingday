@@ -55,6 +55,22 @@
         return new Date(year, montIndex, 0).getDate();
     };
 
+    // * easterForYear(2017)++           17.04     (poniedziałek)	Poniedziałek Wielkanocny
+    // * easterForYear(2017) + 50day     04.06     (niedziela)	    Zesłanie Ducha Świętego (Zielone Świątki)
+    // * easterForYear(2017) + 60day     15.06     (czwartek)	    Boże Ciało
+    helpers.generateMovingHolidays = function(year) {
+        var add = [0, 1, 49, 60];
+        var holidays = [];
+        var easterDay = lib.easter(year);
+
+        for(var i = 0; i < add.length; i++) {
+            var easter = new Date(easterDay);
+            easter.setDate(easterDay.getDate() + add[i]);
+            holidays.push({month: easter.getMonth(), day: easter.getDate()})
+        }
+        return holidays;
+    };
+
     // Should return a Easter day from given year.
     lib.easter = function(year) {
         var a = year % 19;
@@ -75,22 +91,6 @@
         return new Date(year,n,p);
     };
 
-    // * easterForYear(2017)++           17.04     (poniedziałek)	Poniedziałek Wielkanocny
-    // * easterForYear(2017) + 50day     04.06     (niedziela)	    Zesłanie Ducha Świętego (Zielone Świątki)
-    // * easterForYear(2017) + 60day     15.06     (czwartek)	    Boże Ciało
-
-    helpers.generateMovingHolidays = function(year) {
-        var add = [0, 1, 49, 60];
-        var holidays = [];
-        var easterDay = lib.easter(year);
-
-        for(var i = 0; i < add.length; i++) {
-            var easter = new Date(easterDay);
-            easter.setDate(easterDay.getDate() + add[i]);
-            holidays.push({month: easter.getMonth(), day: easter.getDate()})
-        }
-        return holidays;
-    };
     // Should return true if given date is a working day.
     lib.isWorkingDay = function(year, month, day) {
         var date = new Date(year, month, day);
