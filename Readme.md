@@ -10,7 +10,6 @@ It's tiny lib to get business day's from a date (month-year).
 5. Should have configurable regular holiday's.
 
 #### regular no working day's in Poland:
-
 * 01.01     (niedziela)	    Nowy Rok, Świętej Bożej Rodzicielki
 * 06.01     (piątek)	    Trzech Króli (Objawienie Pańskie)
 * 01.05     (poniedziałek)	Święto Pracy
@@ -27,9 +26,9 @@ It's tiny lib to get business day's from a date (month-year).
 * easterForYear(2017) + 50day     04.06     (niedziela)	    Zesłanie Ducha Świętego (Zielone Świątki)
 * easterForYear(2017) + 60day     15.06     (czwartek)	    Boże Ciało
 
-#### methods:
-* easter(year) - return object Date width easter date.
-* isWorkingDay(year, indexMonth, day) - return Boolean (indexMonth january: 0, february: 1])
-* getLastWorkDayOfMonth(year, indexMonth) return object Date width the last business day in a given month
-* settings.workWeekNumber - default value is 5 (monday to friday) business day.
-* settings.defaultPermanentHolidays - array of objects width a regular holiday `{month: 0, day: 1}`.
+#### Methods:
+* `easter(year);` - return object Date width easter date.
+* `isWorkingDay(year, indexMonth, day);` - return Boolean (indexMonth january: 0, february: 1])
+* `getLastWorkDayOfMonth(year, indexMonth);` return object Date width the last business day in a given month
+* `settings.workWeekNumber` - default value is 5 (monday to friday) business day.
+* `settings.defaultPermanentHolidays` - array of objects width a regular holiday `{month: 0, day: 1}`.
