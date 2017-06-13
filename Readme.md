@@ -1,9 +1,9 @@
-# workingDay.js
+# workingDays.js
 It's tiny lib to get business day's from a date (month-year).
 
 ### Lib functionality:
 
-1. Should return object width working day's in a given month,
+1. Should return object width working day's in a given month, //todo
 2. Should return true if given date is a working day.
 3. Should return last working day from given month and year.
 4. Should return a Easter day from given year.

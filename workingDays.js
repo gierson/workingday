@@ -10,49 +10,47 @@
     lib.version = "0.0.1";
 
     lib.settings = {
-        workWeekNumber: 5,
-        defaultPermanentHolidays: [{ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
-                month: 0,
-                day: 1
-            },
+        businessDaysNumber: 5,
+        defaultPermanentHolidays: [ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
+            { indexMonth: 0, day: 1},
             {
-                month: 0,
+                indexMonth: 0,
                 day: 6
             },
             {
-                month: 4,
+                indexMonth: 4,
                 day: 1
             },
             {
-                month: 4,
+                indexMonth: 4,
                 day: 3
             },
             {
-                month: 7,
+                indexMonth: 7,
                 day: 15
             },
             {
-                month: 10,
+                indexMonth: 10,
                 day: 1
             },
             {
-                month: 10,
+                indexMonth: 10,
                 day: 11
             },
             {
-                month: 11,
+                indexMonth: 11,
                 day: 25
             },
             {
-                month: 11,
+                indexMonth: 11,
                 day: 26
             }
         ]
     };
 
-    helpers.getNumbersOfDaysInMonth = function(year, month) {  //(month is a index ex[january: 0, february: 1]
-        var montIndex = month + 1;
-        return new Date(year, montIndex, 0).getDate();
+    helpers.getNumbersOfDaysInMonth = function(year, indexMonth) {  //(month is a index ex[january: 0, february: 1]
+        var monthIndex = indexMonth + 1;
+        return new Date(year, monthIndex, 0).getDate();
     };
 
     // * easterForYear(2017)++           17.04     (poniedziałek)	Poniedziałek Wielkanocny
@@ -66,7 +64,7 @@
         for(var i = 0; i < add.length; i++) {
             var easter = new Date(easterDay);
             easter.setDate(easterDay.getDate() + add[i]);
-            holidays.push({month: easter.getMonth(), day: easter.getDate()})
+            holidays.push({indexMonth: easter.getMonth(), day: easter.getDate()})
         }
         return holidays;
     };
@@ -92,23 +90,22 @@
     };
 
     // Should return true if given date is a working day.
-    lib.isWorkingDay = function(year, month, day) {
-        var date = new Date(year, month, day);
-        var workWeekNumber = this.settings.workWeekNumber;
+    lib.isWorkingDay = function(year, indexMonth, day) {
+        var date = new Date(year, indexMonth, day);
+        var businessDaysNumber = this.settings.businessDaysNumber;
         var permanentHolidays = this.settings.defaultPermanentHolidays;
         var movingHolidays = helpers.generateMovingHolidays(year);
-        var offDays = [];
+        var businessDays = [];
+        businessDays.push.apply(businessDays, permanentHolidays);
+        businessDays.push.apply(businessDays, movingHolidays);
 
-        offDays.push.apply(offDays, permanentHolidays);
-        offDays.push.apply(offDays, movingHolidays);
-
-        if(!Date.parse(year, month, day)) {
+        if(!Date.parse(year, indexMonth, day) || isNaN(date.getTime())) {
             throw new TypeError('Bad input date');
         }
-        if(date.getDay() <= workWeekNumber && date.getDay() > 0) {
+        if(date.getDay() <= businessDaysNumber && date.getDay() > 0) {
             var detected = false;
-            offDays.forEach(function(holiday) {
-                if(holiday.month === month && holiday.day === day) {
+            businessDays.forEach(function(holiday) {
+                if(holiday.indexMonth === indexMonth && holiday.day === day) {
                     detected = true;
                 }
             });
@@ -116,11 +113,11 @@
         } else return false;
     };
 
-    lib.getLastWorkDayOfMonth = function(year, month) {
-        var daysInMont = helpers.getNumbersOfDaysInMonth(year, month);
+    lib.getLastWorkDayOfMonth = function(year, indexMonth) {
+        var daysInMont = helpers.getNumbersOfDaysInMonth(year, indexMonth);
         for(var i = daysInMont; i > 1; i--) {
-            if(this.isWorkingDay(year, month, i)) {
-                return new Date(year, month, i);
+            if(this.isWorkingDay(year, indexMonth, i)) {
+                return new Date(year, indexMonth, i);
             }
         }
     };

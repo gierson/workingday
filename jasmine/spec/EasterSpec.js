@@ -3,12 +3,12 @@ describe("workingday lib", function() {
 
     beforeEach(function() {
         easterDay = new Date(2017, 3, 16);
-        workingday.settings.workWeekNumber = 5;
+        workingday.settings.businessDaysNumber = 5;
     });
 
-    describe("isWorkingDay method", function() {
+    describe("Easter method shuld return ester date.", function() {
 
-        it("should give a easter date", function () {
+        it("Should return the easter date", function () {
             expect(workingday.easter('2017')).toEqual(easterDay);
         });
 
@@ -52,7 +52,7 @@ describe("workingday lib", function() {
 
         it("Should return true if give a saturday width setting.workWeekNumber to 6 .", function () {
 
-            workingday.settings.workWeekNumber = 6;
+            workingday.settings.businessDaysNumber = 6;
 
             expect(workingday.isWorkingDay(2017, 5, 17)).toEqual(true);
 
