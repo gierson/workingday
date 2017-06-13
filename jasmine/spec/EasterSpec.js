@@ -44,6 +44,12 @@ describe("workingday lib", function() {
 
         });
 
+        it("Should return false if give a moving holiday like 15.06.2017.", function () {
+
+            expect(workingday.isWorkingDay(2017, 5, 15)).toEqual(false);
+
+        });
+
         it("Should return true if give a saturday width setting.workWeekNumber to 6 .", function () {
 
             workingday.settings.workWeekNumber = 6;
@@ -53,17 +59,17 @@ describe("workingday lib", function() {
         });
 
         describe("getLastWorkDayOfMonth method", function() {
-            it("Should return a last working day in a given month", function () {
+            it("Should return a last working day in a given month 2017.06.30", function () {
 
                 expect(workingday.getLastWorkDayOfMonth(2017, 5)).toEqual(new Date(2017, 5, 30));
 
             });
-            it("Should return a last working day in a given month", function () {
+            it("Should return a last working day in a given month 2017.05.31", function () {
 
                 expect(workingday.getLastWorkDayOfMonth(2017, 4)).toEqual(new Date(2017, 4, 31));
 
             });
-            it("Should return a last working day in a given month", function () {
+            it("Should return a last working day in a given month 2017.04.28", function () {
 
                 expect(workingday.getLastWorkDayOfMonth(2017, 3)).toEqual(new Date(2017, 3, 28));
 

@@ -2,7 +2,7 @@ workingDay.js - it's tiny lib to get working day's from a date (month-year) or (
 
 Lib functionality:
 
-1. Should return object width working day's in a given year.
+1. Should return object width working day's in a given year. ? it's nessesary ?
 2. Should return object width working day's in a given month,
 3. Should return true if given date is a working day.
 4. Should return last working day from given month and year.

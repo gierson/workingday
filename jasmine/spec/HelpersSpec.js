@@ -17,13 +17,13 @@ describe("Helpers", function() {
 
     it("should give a 31 days", function() {
 
-      expect(helpers.getNumbersOfDaysInMonth(year, 1)).toEqual(numberDaysInJanuary);
+      expect(helpers.getNumbersOfDaysInMonth(year, 0)).toEqual(numberDaysInJanuary);
 
     });
 
     it("should give a 28 days", function() {
 
-      expect(helpers.getNumbersOfDaysInMonth(year, 2)).toEqual(numberDaysInFebruary);
+      expect(helpers.getNumbersOfDaysInMonth(year, 1)).toEqual(numberDaysInFebruary);
 
     });
 

@@ -11,9 +11,7 @@
 
     lib.settings = {
         workWeekNumber: 5,
-
-        // defaultPermanentHolidays: [],
-        defaultPermanentHolidays: [{
+        defaultPermanentHolidays: [{ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
                 month: 0,
                 day: 1
             },
@@ -52,9 +50,9 @@
         ]
     };
 
-
-    helpers.getNumbersOfDaysInMonth = function(year, month) {
-        return new Date(year, month, 0).getDate();
+    helpers.getNumbersOfDaysInMonth = function(year, month) {  //(month is a index ex[january: 0, february: 1]
+        var montIndex = month + 1;
+        return new Date(year, montIndex, 0).getDate();
     };
 
     // Should return a Easter day from given year.
@@ -86,12 +84,10 @@
         var holidays = [];
         var easterDay = lib.easter(year);
 
-       // easter.setDate(easter.getDate() + 1);
         for(var i = 0; i < add.length; i++) {
             var easter = new Date(easterDay);
             easter.setDate(easterDay.getDate() + add[i]);
             holidays.push({month: easter.getMonth(), day: easter.getDate()})
-            //return easter;
         }
         return holidays;
     };
@@ -116,23 +112,17 @@
                     detected = true;
                 }
             });
-
             return !detected;
-
         } else return false;
-
     };
 
     lib.getLastWorkDayOfMonth = function(year, month) {
         var daysInMont = helpers.getNumbersOfDaysInMonth(year, month);
-        for(var i = daysInMont; i >= 1; i--) {
-            console.log(i);
+        for(var i = daysInMont; i > 1; i--) {
             if(this.isWorkingDay(year, month, i)) {
-                console.log(month);
                 return new Date(year, month, i);
             }
         }
-
     };
 
     root.workingday = lib;
