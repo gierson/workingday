@@ -12,39 +12,15 @@
     lib.settings = {
         businessDaysNumber: 5,
         defaultPermanentHolidays: [ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
-            { indexMonth: 0, day: 1},
-            {
-                indexMonth: 0,
-                day: 6
-            },
-            {
-                indexMonth: 4,
-                day: 1
-            },
-            {
-                indexMonth: 4,
-                day: 3
-            },
-            {
-                indexMonth: 7,
-                day: 15
-            },
-            {
-                indexMonth: 10,
-                day: 1
-            },
-            {
-                indexMonth: 10,
-                day: 11
-            },
-            {
-                indexMonth: 11,
-                day: 25
-            },
-            {
-                indexMonth: 11,
-                day: 26
-            }
+            { indexMonth: 0, day: 1 },
+            { indexMonth: 0, day: 6 },
+            { indexMonth: 4, day: 1 },
+            { indexMonth: 4, day: 3 },
+            { indexMonth: 7, day: 15 },
+            { indexMonth: 10, day: 1 },
+            { indexMonth: 10, day: 11 },
+            { indexMonth: 11, day: 25 },
+            { indexMonth: 11, day: 26 }
         ]
     };
 
@@ -122,7 +98,67 @@
         }
     };
 
+    lib.generateCalendarMonth = function (year, indexMonth, containerId) {
+        var container = document.getElementById(containerId);
+        var template = '';
+        var dniTyg = ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'];
+        var miesiace = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+        var monthLength = helpers.getNumbersOfDaysInMonth(year, indexMonth);
+        var startingDay = new Date(year, indexMonth, 1).getDay()-1;
+        var month = indexMonth + 1;
+        startingDay = startingDay === -1 ? 6 : startingDay;
+
+        template += '<table class="calendar" cellpadding="0" cellspacing="0"><tr>';
+        template += '<th colspan="7" class="calendar-month">' + miesiace[indexMonth] + '</th></tr><tr>';
+
+        for(h = 0; h < 7; h++) {
+            template += '<th class="calendar-header-day">' + dniTyg[h] + '</th>';
+        }
+
+        var day = 1;
+        // this loop is for is weeks (rows)
+
+        for (var i = 0; i < 9; i++) {
+            template += '<tr>';
+            // this loop is for weekdays (cells)
+            for (var j = 0; j < 7; j++) {
+                template += '<td class="calendar-day">';
+                if (day <= monthLength && (i >= 1 || j >= startingDay)) {
+                    template += this.isWorkingDay(year, indexMonth, day) ? '<span class="work d'+day+'m'+ month +'">' + day + '</span>' : '<span class="holiday">' + day + '</span>';
+                    day++;
+                }
+                template += '</td>';
+            }
+            // stop making rows if we've run out of days
+            if (day > monthLength) {
+                break;
+            } else {
+                template += '</tr>';
+            }
+        }
+        template += '</table>';
+
+        container.innerHTML = template;
+    };
+
+    lib.setUpEventListeners = function() {
+        var tdDay = document.querySelector('.calendar-full');
+
+        tdDay.addEventListener('click', function(event) {
+            var elementClicked = event.target;
+            //if(elementClicked.className === 'calendar-day') {
+                console.log(elementClicked);
+            //}
+        });
+    };
+
+
+
     root.workingday = lib;
     root.helpers = helpers;
 
 })(this);
+
+setTimeout(function () {
+    workingday.setUpEventListeners();
+}, 0);
