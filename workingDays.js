@@ -24,6 +24,8 @@
         ]
     };
 
+    lib.storage = [];
+
     helpers.getNumbersOfDaysInMonth = function(year, indexMonth) {  //(month is a index ex[january: 0, february: 1]
         var monthIndex = indexMonth + 1;
         return new Date(year, monthIndex, 0).getDate();
@@ -100,6 +102,7 @@
 
     lib.generateCalendarMonth = function (year, indexMonth, containerId) {
         var container = document.getElementById(containerId);
+        var storage = this.getStoredData();
         var template = '';
         var dniTyg = ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'];
         var miesiace = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
@@ -116,16 +119,29 @@
         }
 
         var day = 1;
+        var addClass = '';
         // this loop is for is weeks (rows)
 
         for (var i = 0; i < 9; i++) {
             template += '<tr>';
             // this loop is for weekdays (cells)
             for (var j = 0; j < 7; j++) {
+
                 template += '<td class="calendar-day">';
                 if (day <= monthLength && (i >= 1 || j >= startingDay)) {
-                    template += this.isWorkingDay(year, indexMonth, day) ? '<span class="work d'+day+'m'+ month +'">' + day + '</span>' : '<span class="holiday">' + day + '</span>';
+                    var storedDay = storage.filter(function (store) {
+                       if(store.month === month && store.day === day) {
+                           return store;
+                       }
+                    });
+                    if(storedDay.length > 0) {
+                        addClass = 'addOne';
+                    } else {
+                        addClass = 'work'
+                    }
+                    template += this.isWorkingDay(year, indexMonth, day) ? '<span month="'+month+'" day="'+day+'" class="'+addClass+'">' + day + '</span>' : '<span class="holiday">' + day + '</span>';
                     day++;
+                    addClass = '';
                 }
                 template += '</td>';
             }
@@ -141,14 +157,40 @@
         container.innerHTML = template;
     };
 
+    lib.addToCalendar = function (data) {
+        this.storage.push(data);
+        console.log(this.storage);
+    };
+
+    lib.getStoredData = function () {
+        if(localStorage.getItem('calendarData')) {
+            lib.storage = JSON.parse(localStorage.getItem('calendarData'));
+        }
+        return this.storage;
+    };
+    lib.saveToLocalStorage = function () {
+        localStorage.setItem('calendarData', JSON.stringify(lib.storage));
+    }
+
     lib.setUpEventListeners = function() {
         var tdDay = document.querySelector('.calendar-full');
+        var saveButton = document.querySelector('#save');
+
+        saveButton.addEventListener('click', function (event) {
+           lib.saveToLocalStorage(); 
+        });
 
         tdDay.addEventListener('click', function(event) {
             var elementClicked = event.target;
-            //if(elementClicked.className === 'calendar-day') {
-                console.log(elementClicked);
-            //}
+            if(elementClicked.className === 'work') {
+                elementClicked.className = 'addOne';
+                lib.addToCalendar({month: Number(elementClicked.getAttribute('month')), day: Number(elementClicked.getAttribute('day'))});
+            }
+            if(elementClicked.className === 'addOne') {
+                elementClicked.addEventListener('click', function(event) {
+                    console.log(event.target);
+                });
+            }
         });
     };
 

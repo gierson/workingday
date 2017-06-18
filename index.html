@@ -66,13 +66,12 @@
       min-height: 250px;
       vertical-align: top;
     }
-    .d6,
     .d7,
     .d8{
       background: linear-gradient(to top right, #819db5 49.5%, #aea25c 50.5%);
       color: #fff;
     }
-    .d19,
+    .addOne,
     .d20 {
       background: linear-gradient(to top right, #77b5a5 49.5%, #a68aae 50.5%);
       color: #fff;
@@ -88,6 +87,8 @@
 </head>
 
 <body>
+<button id="save">Zapisz</button>
+
 <div class="calendar-full">
   <div id="0"></div>
   <div id="1"></div>
@@ -105,7 +106,6 @@
 <script>
   workingday.settings.businessDaysNumber = 5;
   for (var i = 0; i < 12; i++) {
-      console.log(i);
     workingday.generateCalendarMonth(2017, i, i);
   }
 </script>
