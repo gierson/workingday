@@ -5,6 +5,20 @@
   <title>Test lib</title>
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,700&amp;subset=latin-ext" rel="stylesheet">
   <script src="workingDays.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+
+  <script>
+      // Initialize Firebase
+      var config = {
+          apiKey: "AIzaSyCz6KjTDQj8DgDLg1vi53wIqbNPkE1JexA",
+          authDomain: "kalendarz-2837c.firebaseapp.com",
+          databaseURL: "https://kalendarz-2837c.firebaseio.com",
+          projectId: "kalendarz-2837c",
+          storageBucket: "",
+          messagingSenderId: "143929907050"
+      };
+      firebase.initializeApp(config);
+  </script>
   <style>
     body {
       font-family: 'Source Sans Pro', sans-serif;
@@ -89,6 +103,8 @@
 <body>
 <button id="save">Zapisz</button>
 
+<h2 id="restLeft"></h2>
+
 <div class="calendar-full">
   <div id="0"></div>
   <div id="1"></div>
@@ -104,10 +120,12 @@
   <div id="11"></div>
 </div>
 <script>
-  workingday.settings.businessDaysNumber = 5;
-  for (var i = 0; i < 12; i++) {
-    workingday.generateCalendarMonth(2017, i, i);
-  }
+    workingday.settings.businessDaysNumber = 5;
+    workingday.getStoredData();
+    setTimeout(function() {
+      for (var i = 0; i < 12; i++) {
+        workingday.generateCalendarMonth(2017, i, i);
+      }},800);
 </script>
 </body>
 </html>

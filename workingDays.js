@@ -25,6 +25,7 @@
     };
 
     lib.storage = [];
+    lib.restLeft = 29;
 
     helpers.getNumbersOfDaysInMonth = function(year, indexMonth) {  //(month is a index ex[january: 0, february: 1]
         var monthIndex = indexMonth + 1;
@@ -102,7 +103,7 @@
 
     lib.generateCalendarMonth = function (year, indexMonth, containerId) {
         var container = document.getElementById(containerId);
-        var storage = this.getStoredData();
+        var storage = this.storage;
         var template = '';
         var dniTyg = ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'];
         var miesiace = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
@@ -157,20 +158,48 @@
         container.innerHTML = template;
     };
 
+    lib.restLeftUpdate = function () {
+        var restLeftCounter = document.getElementById('restLeft');
+        var selected = lib.storage.length;
+        restLeftCounter.innerHTML = lib.restLeft - selected + ' days left';
+    };
+
     lib.addToCalendar = function (data) {
         this.storage.push(data);
-        console.log(this.storage);
+
+        //console.log(this.storage);
+        this.restLeftUpdate();
+    };
+
+    lib.deleteFromStorage = function(toDelete) {
+
+        this.storage.forEach(function(item, index) {
+            console.log(toDelete);
+            if(item.day === toDelete.day && item.month === toDelete.month) {
+                lib.storage.splice(index,1);
+                lib.restLeftUpdate();
+            }
+        })
     };
 
     lib.getStoredData = function () {
-        if(localStorage.getItem('calendarData')) {
-            lib.storage = JSON.parse(localStorage.getItem('calendarData'));
-        }
+
+        var stored = root.firebase.database().ref('calendar/');
+        stored.once('value')
+            .then(function(snapshot) {
+                if(snapshot.val() === null) {
+                    lib.storage = [];
+                } else lib.storage = snapshot.val();
+            });
+        // if(localStorage.getItem('calendarData')) {
+        //     lib.storage = JSON.parse(localStorage.getItem('calendarData'));
+        // }
         return this.storage;
     };
     lib.saveToLocalStorage = function () {
-        localStorage.setItem('calendarData', JSON.stringify(lib.storage));
-    }
+        //localStorage.setItem('calendarData', JSON.stringify(this.storage));
+        root.firebase.database().ref('calendar/').set(this.storage);
+    };
 
     lib.setUpEventListeners = function() {
         var tdDay = document.querySelector('.calendar-full');
@@ -185,15 +214,15 @@
             if(elementClicked.className === 'work') {
                 elementClicked.className = 'addOne';
                 lib.addToCalendar({month: Number(elementClicked.getAttribute('month')), day: Number(elementClicked.getAttribute('day'))});
+                return true;
             }
             if(elementClicked.className === 'addOne') {
-                elementClicked.addEventListener('click', function(event) {
-                    console.log(event.target);
-                });
+                elementClicked.className = 'work';
+                lib.deleteFromStorage({month: Number(elementClicked.getAttribute('month')), day: Number(elementClicked.getAttribute('day'))});
+                console.log(elementClicked);
             }
         });
     };
-
 
 
     root.workingday = lib;
@@ -203,4 +232,5 @@
 
 setTimeout(function () {
     workingday.setUpEventListeners();
+    workingday.restLeftUpdate();
 }, 0);
