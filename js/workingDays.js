@@ -9,6 +9,10 @@
 
     lib.version = "0.0.1";
 
+    lib.calendarYearTemplate = root.Handlebars.compile(document.getElementById('calendar-header-year-template').innerHTML);
+    lib.calendarHeaderTemplate = root.Handlebars.compile(document.getElementById('calendar-header-template').innerHTML);
+
+
     lib.settings = {
         businessDaysNumber: 5,
         defaultPermanentHolidays: [ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
@@ -110,6 +114,10 @@
         var monthLength = helpers.getNumbersOfDaysInMonth(year, indexMonth);
         var startingDay = new Date(year, indexMonth, 1).getDay()-1;
         var month = indexMonth + 1;
+
+        document.getElementById('year').innerHTML = this.calendarYearTemplate({year: year});
+        document.getElementById('days-list').innerHTML = this.calendarHeaderTemplate({days: dniTyg});
+
         startingDay = startingDay === -1 ? 6 : startingDay;
 
         template += '<table class="calendar" cellpadding="0" cellspacing="0"><tr>';
@@ -127,7 +135,6 @@
             template += '<tr>';
             // this loop is for weekdays (cells)
             for (var j = 0; j < 7; j++) {
-
                 template += '<td class="calendar-day">';
                 if (day <= monthLength && (i >= 1 || j >= startingDay)) {
                     var storedDay = storage.filter(function (store) {
@@ -234,3 +241,4 @@ setTimeout(function () {
     workingday.setUpEventListeners();
     workingday.restLeftUpdate();
 }, 0);
+

@@ -1,0 +1,75 @@
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+}
+.holiday {
+    color: crimson;
+    font-weight: 400;
+    display: block;
+}
+table.calendar {
+    background: #fdfdfd;
+}
+table.calendar td span {
+    display: block;
+    width: 30px;
+    text-align: center;
+    padding: 5px;
+}
+table.calendar td {
+    text-align: center;
+}
+table.calendar th.calendar-month {
+    font-weight: 500;
+    font-size: 16px;
+    padding: 5px 10px;
+}
+table.calendar th.calendar-header-day {
+    font-weight: 300;
+    font-size: 12px;
+    padding: 14px 10px;
+}
+table.calendar td.calendar-day {
+    background: rgba(255,255,255,1);
+    background: -moz-linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(237,237,237,1)));
+    background: -webkit-linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: -o-linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: -ms-linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=1 );
+    border-right: 1px solid #dcdcdc;
+    border-top: 1px solid #dcdcdc;
+}
+table.calendar td.calendar-day:hover {
+    background: rgba(212,228,239,1);
+    background: -moz-linear-gradient(45deg, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+    background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(134,174,204,1)));
+    background: -webkit-linear-gradient(45deg, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+    background: -o-linear-gradient(45deg, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+    background: -ms-linear-gradient(45deg, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+    background: linear-gradient(45deg, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#86aecc', GradientType=1 );
+    color: #ffffff;
+}
+.calendar-full div {
+    display: inline-block;
+    margin: 10px;
+    min-height: 250px;
+    vertical-align: top;
+}
+.d7,
+.d8{
+    background: linear-gradient(to top right, #819db5 49.5%, #aea25c 50.5%);
+    color: #fff;
+}
+.addOne,
+.d20 {
+    background: linear-gradient(to top right, #77b5a5 49.5%, #a68aae 50.5%);
+    color: #fff;
+}
+.d27 {
+    background: rgba(0,0,0,1);
+    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 33%, rgba(255,0,30,1) 33%, rgba(255,0,0,1) 66%, rgba(99, 255, 59,1) 66%);
+    color: #fff;
+}
