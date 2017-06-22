@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Test lib</title>
-  <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,700&amp;subset=latin-ext" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
   <script>
@@ -21,28 +22,14 @@
       firebase.initializeApp(config);
   </script>
 </head>
-
 <body>
-<button id="save">Zapisz</button>
-
-<h2 id="restLeft"></h2>
-<h1 id="year"></h1>
-<div id="days-list"></div>
-
-
-<div class="calendar-full">
-  <div id="0"></div>
-  <div id="1"></div>
-  <div id="2"></div>
-  <div id="3"></div>
-  <div id="4"></div>
-  <div id="5"></div>
-  <div id="6"></div>
-  <div id="7"></div>
-  <div id="8"></div>
-  <div id="9"></div>
-  <div id="10"></div>
-  <div id="11"></div>
+<div class="container">
+  <button class="btn btn-primary" id="save">Zapisz</button>
+  <div id="alert"></div>
+  <h2 id="restLeft"></h2>
+  <h1 id="year"></h1>
+  <div id="days-list"></div>
+  <div id="calendar-full"></div>
 </div>
 <script id="calendar-header-year-template" type="text/x-handlebars-template">
     {{year}}
@@ -59,26 +46,24 @@
     {{#each days}}
     <tr>
       {{#each this.data}}
-        <td class="calendar-day">
-          {{#if this.className}}
+        <td class="calendar-day {{this.className2}}">
           <span class="{{this.className}}" month="{{this.monthNum}}" day="{{this.dayNum}}">{{this.dayNum}}</span>
-          {{/if}}
         </td>
       {{/each}}
     </tr>
     {{/each}}
   </table>
 </script>
+<script id="aletr-template" type="text/x-handlebars-template">
+  <div class="alert alert-{{type}}">
+    <strong>{{type}}!</strong> {{message}}
+  </div>
+</script>
 <script src="js/handlebars-v4.0.10.js"></script>
 <script src="js/workingDays.js"></script>
 <script>
     workingday.settings.businessDaysNumber = 5;
-    workingday.getStoredData();
-    setTimeout(function() {
-      for (var i = 0; i < 12; i++) {
-        workingday.generateCalendarMonth(2017, i, i);
-      }
-      },800);
+    workingday.generateCalendars(2017, [5, 6, 7, 8], 'calendar-full');
 
 </script>
 </body>

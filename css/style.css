@@ -4,7 +4,7 @@ body {
 }
 .holiday {
     color: crimson;
-    font-weight: 400;
+    font-weight: 700;
     display: block;
 }
 table.calendar {
@@ -12,24 +12,28 @@ table.calendar {
 }
 table.calendar td span {
     display: block;
-    width: 30px;
     text-align: center;
-    padding: 5px;
+    padding: 25px;
 }
 table.calendar td {
     text-align: center;
 }
 table.calendar th.calendar-month {
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
     padding: 5px 10px;
+    text-align: center;
+
 }
 table.calendar th.calendar-header-day {
-    font-weight: 300;
+    font-weight: 500;
     font-size: 12px;
     padding: 14px 10px;
+    width: 70px;
+    text-align: center;
 }
 table.calendar td.calendar-day {
+    height: 70px;
     background: rgba(255,255,255,1);
     background: -moz-linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
     background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(237,237,237,1)));
@@ -52,19 +56,40 @@ table.calendar td.calendar-day:hover {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#86aecc', GradientType=1 );
     color: #ffffff;
 }
-.calendar-full div {
+table.calendar td.calendar-day.placeholder {
+    background: #ffffff;
+}
+table.calendar td.calendar-day.placeholder:hover {
+    background: #ffffff;
+}
+table.calendar td.calendar-day.offday {
+    background: #FFF0DE;
+}
+table.calendar td.calendar-day.offday:hover {
+    background: #FFF0DE;
+}
+#calendar-full div {
     display: inline-block;
     margin: 10px;
     min-height: 250px;
     vertical-align: top;
+}
+#alert {
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0s, opacity 0.5s;
+    -moz-transition: visibility 0s, opacity 0.5s;
+    -ms-transition: visibility 0s, opacity 0.5s;
+    -o-transition: visibility 0s, opacity 0.5s;
+    transition: visibility 0s, opacity 0.5s;
+
 }
 .d7,
 .d8{
     background: linear-gradient(to top right, #819db5 49.5%, #aea25c 50.5%);
     color: #fff;
 }
-.addOne,
-.d20 {
+.addOne {
     background: linear-gradient(to top right, #77b5a5 49.5%, #a68aae 50.5%);
     color: #fff;
 }

@@ -12,6 +12,20 @@
   <script src="lib/jasmine-2.6.3/boot.js"></script>
 
   <!-- include source files here... -->
+  <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+  <script>
+      // Initialize Firebase
+      var config = {
+          apiKey: "AIzaSyCz6KjTDQj8DgDLg1vi53wIqbNPkE1JexA",
+          authDomain: "kalendarz-2837c.firebaseapp.com",
+          databaseURL: "https://kalendarz-2837c.firebaseio.com",
+          projectId: "kalendarz-2837c",
+          storageBucket: "",
+          messagingSenderId: "143929907050"
+      };
+      firebase.initializeApp(config);
+  </script>
+  <script src="../js/handlebars-v4.0.10.js"></script>
   <script src="../js/workingDays.js"></script>
 
   <!-- include spec files here... -->

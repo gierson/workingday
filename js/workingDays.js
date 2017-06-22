@@ -7,30 +7,6 @@
     var lib = {};
     var helpers = {};
 
-    lib.version = "0.0.1";
-
-    lib.calendarYearTemplate = root.Handlebars.compile(document.getElementById('calendar-header-year-template').innerHTML);
-    lib.calendarHeaderTemplate = root.Handlebars.compile(document.getElementById('calendar-header-template').innerHTML);
-
-
-    lib.settings = {
-        businessDaysNumber: 5,
-        defaultPermanentHolidays: [ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
-            { indexMonth: 0, day: 1 },
-            { indexMonth: 0, day: 6 },
-            { indexMonth: 4, day: 1 },
-            { indexMonth: 4, day: 3 },
-            { indexMonth: 7, day: 15 },
-            { indexMonth: 10, day: 1 },
-            { indexMonth: 10, day: 11 },
-            { indexMonth: 11, day: 25 },
-            { indexMonth: 11, day: 26 }
-        ]
-    };
-
-    lib.storage = [];
-    lib.restLeft = 29;
-
     helpers.getNumbersOfDaysInMonth = function(year, indexMonth) {  //(month is a index ex[january: 0, february: 1]
         var monthIndex = indexMonth + 1;
         return new Date(year, monthIndex, 0).getDate();
@@ -50,6 +26,41 @@
             holidays.push({indexMonth: easter.getMonth(), day: easter.getDate()})
         }
         return holidays;
+    };
+
+    lib.init = function () {
+        this.version = "0.0.1";
+
+        if(document.getElementById('calendar-header-year-template') !== null && document.getElementById('calendar-header-template') !== null) {
+            this.calendarYearTemplate = root.Handlebars.compile(document.getElementById('calendar-header-year-template').innerHTML);
+            this.calendarHeaderTemplate = root.Handlebars.compile(document.getElementById('calendar-header-template').innerHTML);
+            this.aletrTemplate = root.Handlebars.compile(document.getElementById('aletr-template').innerHTML);
+        }
+
+        this.dniTyg = ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'];
+        this.miesiace = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+
+        this.settings = {
+            businessDaysNumber: 5,
+            defaultPermanentHolidays: [ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
+                { indexMonth: 0, day: 1 },
+                { indexMonth: 0, day: 6 },
+                { indexMonth: 4, day: 1 },
+                { indexMonth: 4, day: 3 },
+                { indexMonth: 7, day: 15 },
+                { indexMonth: 10, day: 1 },
+                { indexMonth: 10, day: 11 },
+                { indexMonth: 11, day: 25 },
+                { indexMonth: 11, day: 26 }
+            ]
+        };
+
+        this.storage = [];
+        this.restLeft = 29;
+        setTimeout(function () {
+            lib.setUpEventListeners();
+            lib.restLeftUpdate();
+        }, 0);
     };
 
     // Should return a Easter day from given year.
@@ -104,44 +115,29 @@
             }
         }
     };
+    lib.alertRender = function (type, message) {
+        document.getElementById('alert').innerHTML = this.aletrTemplate({type: type, message: message});
+        document.getElementById('alert').style.opacity = 1;
+        document.getElementById('alert').style.visibility = 'visible';
+        setTimeout(function () {
+            document.getElementById('alert').style.opacity = 0;
+        }, 3500);
+    };
 
-    lib.generateCalendarMonth = function (year, indexMonth, containerId) {
-        // var container = document.getElementById(containerId);
-        var storage = this.storage;
-        var template = '';
-        var dniTyg = ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'];
-        var miesiace = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+    lib.generateCalendarMonth = function (year, indexMonth) {
         var monthLength = helpers.getNumbersOfDaysInMonth(year, indexMonth);
         var startingDay = new Date(year, indexMonth, 1).getDay()-1;
         var month = indexMonth + 1;
         var day = 1;
         var addClass = '';
-
         var calObject = [];
         var calWeek = [];
 
-
-        document.getElementById('year').innerHTML = this.calendarYearTemplate({year: year});
-
         startingDay = startingDay === -1 ? 6 : startingDay;
-
-        // template += '<table class="calendar" cellpadding="0" cellspacing="0"><tr>';
-        // template += '<th colspan="7" class="calendar-month">' + miesiace[indexMonth] + '</th></tr><tr>';
-
-        // for(var h = 0; h < 7; h++) {
-        //     template += '<th class="calendar-header-day">' + dniTyg[h] + '</th>';
-        // }
-
-        // this loop is for is weeks (rows)
-
         for (var i = 0; i < 9; i++) {
-            // template += '<tr>';
-            // this loop is for weekdays (cells)
-
             for (var j = 0; j < 7; j++) {
-                // template += '<td class="calendar-day">';
                 if (day <= monthLength && (i >= 1 || j >= startingDay)) {
-                    var storedDay = storage.filter(function (store) {
+                    var storedDay = this.storage.filter(function (store) {
                        if(store.month === month && store.day === day) {
                            return store;
                        }
@@ -152,39 +148,32 @@
                         } else {
                             addClass = 'work'
                         }
+                        addClass2 = '';
                     } else {
                         addClass = 'holiday';
+                        addClass2 = 'offday';
                     }
-
-                    // template += this.isWorkingDay(year, indexMonth, day) ? '<span month="'+month+'" day="'+day+'" class="'+addClass+'">' + day + '</span>' : '<span class="holiday">' + day + '</span>';
-
-                    calWeek.push({position: j, dayNum: day, className: addClass, monthNum: month});
+                    calWeek.push({position: j, dayNum: day, className: addClass, className2: addClass2, monthNum: month});
                     addClass = '';
                     day++;
                 } else {
-                    calWeek.push({position: j, dayNum: ''});
+                    calWeek.push({position: j, dayNum: '', className2: 'placeholder'});
                 }
-
-                // template += '</td>';
             }
             calObject.push({row: i, data: calWeek});
             calWeek = [];
-            // stop making rows if we've run out of days
             if (day > monthLength) {
                 break;
             }
-            // else {
-            //     template += '</tr>';
-            // }
         }
-        // template += '</table>';
+        return {days: calObject, tableHead: this.dniTyg, month: this.miesiace[indexMonth]};
+    };
 
-        // console.log(calObject);
+    lib.renderMonth = function (year, month, containerId) {
+        document.getElementById('year').innerHTML = this.calendarYearTemplate({year: year});
+        document.getElementById(containerId).innerHTML = this.calendarHeaderTemplate(this.generateCalendarMonth(year, month));
+        this.restLeftUpdate();
 
-        document.getElementById(containerId).innerHTML = this.calendarHeaderTemplate({days: calObject, tableHead: dniTyg, month: miesiace[indexMonth]});
-
-
-        //container.innerHTML = template;
     };
 
     lib.restLeftUpdate = function () {
@@ -195,15 +184,11 @@
 
     lib.addToCalendar = function (data) {
         this.storage.push(data);
-
-        //console.log(this.storage);
         this.restLeftUpdate();
     };
 
     lib.deleteFromStorage = function(toDelete) {
-
         this.storage.forEach(function(item, index) {
-            console.log(toDelete);
             if(item.day === toDelete.day && item.month === toDelete.month) {
                 lib.storage.splice(index,1);
                 lib.restLeftUpdate();
@@ -211,27 +196,43 @@
         })
     };
 
-    lib.getStoredData = function () {
-
+    lib.generateCalendars = function (year, monts, container) {
+        var cont = document.getElementById(container);
+        var element;
         var stored = root.firebase.database().ref('calendar/');
         stored.once('value')
             .then(function(snapshot) {
                 if(snapshot.val() === null) {
                     lib.storage = [];
-                } else lib.storage = snapshot.val();
-            });
-        // if(localStorage.getItem('calendarData')) {
-        //     lib.storage = JSON.parse(localStorage.getItem('calendarData'));
-        // }
-        return this.storage;
+                    lib.alertRender('warning', 'Brak danych do wczytania!');
+                } else {
+                    lib.storage = snapshot.val();
+                    lib.alertRender('success', 'Dane wczytane poprawnie!');
+                    }
+                monts.forEach(function (month) {
+                    element = document.createElement('div');
+                    element.setAttribute('id', month);
+                    cont.appendChild(element);
+                    lib.renderMonth(year, month, month);
+                });
+
+            }, function (error) {
+                lib.alertRender('danger', 'Błąd wczytywania danych!');
+            }
+            );
     };
+
     lib.saveToLocalStorage = function () {
-        //localStorage.setItem('calendarData', JSON.stringify(this.storage));
-        root.firebase.database().ref('calendar/').set(this.storage);
+        root.firebase.database().ref('calendar/').set(this.storage)
+            .then(function () {
+                lib.alertRender('success', 'Dane zapisane poprawnie!');
+            }, function (error) {
+                lib.alertRender('danger', 'Błąd zapisywania danych!');
+            });
     };
 
     lib.setUpEventListeners = function() {
-        var tdDay = document.querySelector('.calendar-full');
+        var tdDay = document.querySelector('#calendar-full');
         var saveButton = document.querySelector('#save');
 
         saveButton.addEventListener('click', function (event) {
@@ -253,14 +254,8 @@
         });
     };
 
-
+    lib.init();
     root.workingday = lib;
     root.helpers = helpers;
-
 })(this);
-
-setTimeout(function () {
-    workingday.setUpEventListeners();
-    workingday.restLeftUpdate();
-}, 0);
 
