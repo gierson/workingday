@@ -48,11 +48,26 @@
     {{year}}
 </script>
 <script id="calendar-header-template" type="text/x-handlebars-template">
-  <ul>
+  <table class="calendar" cellpadding="0" cellspacing="0">
+    <th colspan="7" class="calendar-month">{{month}}</th></tr>
+    <tr>
+      {{#each tableHead}}
+      <th class="calendar-header-day">{{this}}</th>
+      {{/each}}
+    </tr>
+
     {{#each days}}
-    <li>{{this}}</li>
+    <tr>
+      {{#each this.data}}
+        <td class="calendar-day">
+          {{#if this.className}}
+          <span class="{{this.className}}" month="{{this.monthNum}}" day="{{this.dayNum}}">{{this.dayNum}}</span>
+          {{/if}}
+        </td>
+      {{/each}}
+    </tr>
     {{/each}}
-  </ul>
+  </table>
 </script>
 <script src="js/handlebars-v4.0.10.js"></script>
 <script src="js/workingDays.js"></script>
@@ -60,8 +75,9 @@
     workingday.settings.businessDaysNumber = 5;
     workingday.getStoredData();
     setTimeout(function() {
-//      for (var i = 0; i < 12; i++) {
-        workingday.generateCalendarMonth(2017, 5, 5);
+      for (var i = 0; i < 12; i++) {
+        workingday.generateCalendarMonth(2017, i, i);
+      }
       },800);
 
 </script>

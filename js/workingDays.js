@@ -106,7 +106,7 @@
     };
 
     lib.generateCalendarMonth = function (year, indexMonth, containerId) {
-        var container = document.getElementById(containerId);
+        // var container = document.getElementById(containerId);
         var storage = this.storage;
         var template = '';
         var dniTyg = ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'];
@@ -114,55 +114,77 @@
         var monthLength = helpers.getNumbersOfDaysInMonth(year, indexMonth);
         var startingDay = new Date(year, indexMonth, 1).getDay()-1;
         var month = indexMonth + 1;
+        var day = 1;
+        var addClass = '';
+
+        var calObject = [];
+        var calWeek = [];
+
 
         document.getElementById('year').innerHTML = this.calendarYearTemplate({year: year});
-        document.getElementById('days-list').innerHTML = this.calendarHeaderTemplate({days: dniTyg});
 
         startingDay = startingDay === -1 ? 6 : startingDay;
 
-        template += '<table class="calendar" cellpadding="0" cellspacing="0"><tr>';
-        template += '<th colspan="7" class="calendar-month">' + miesiace[indexMonth] + '</th></tr><tr>';
+        // template += '<table class="calendar" cellpadding="0" cellspacing="0"><tr>';
+        // template += '<th colspan="7" class="calendar-month">' + miesiace[indexMonth] + '</th></tr><tr>';
 
-        for(h = 0; h < 7; h++) {
-            template += '<th class="calendar-header-day">' + dniTyg[h] + '</th>';
-        }
+        // for(var h = 0; h < 7; h++) {
+        //     template += '<th class="calendar-header-day">' + dniTyg[h] + '</th>';
+        // }
 
-        var day = 1;
-        var addClass = '';
         // this loop is for is weeks (rows)
 
         for (var i = 0; i < 9; i++) {
-            template += '<tr>';
+            // template += '<tr>';
             // this loop is for weekdays (cells)
+
             for (var j = 0; j < 7; j++) {
-                template += '<td class="calendar-day">';
+                // template += '<td class="calendar-day">';
                 if (day <= monthLength && (i >= 1 || j >= startingDay)) {
                     var storedDay = storage.filter(function (store) {
                        if(store.month === month && store.day === day) {
                            return store;
                        }
                     });
-                    if(storedDay.length > 0) {
-                        addClass = 'addOne';
+                    if(this.isWorkingDay(year, indexMonth, day)) {
+                        if(storedDay.length > 0) {
+                            addClass = 'addOne';
+                        } else {
+                            addClass = 'work'
+                        }
                     } else {
-                        addClass = 'work'
+                        addClass = 'holiday';
                     }
-                    template += this.isWorkingDay(year, indexMonth, day) ? '<span month="'+month+'" day="'+day+'" class="'+addClass+'">' + day + '</span>' : '<span class="holiday">' + day + '</span>';
-                    day++;
+
+                    // template += this.isWorkingDay(year, indexMonth, day) ? '<span month="'+month+'" day="'+day+'" class="'+addClass+'">' + day + '</span>' : '<span class="holiday">' + day + '</span>';
+
+                    calWeek.push({position: j, dayNum: day, className: addClass, monthNum: month});
                     addClass = '';
+                    day++;
+                } else {
+                    calWeek.push({position: j, dayNum: ''});
                 }
-                template += '</td>';
+
+                // template += '</td>';
             }
+            calObject.push({row: i, data: calWeek});
+            calWeek = [];
             // stop making rows if we've run out of days
             if (day > monthLength) {
                 break;
-            } else {
-                template += '</tr>';
             }
+            // else {
+            //     template += '</tr>';
+            // }
         }
-        template += '</table>';
+        // template += '</table>';
 
-        container.innerHTML = template;
+        // console.log(calObject);
+
+        document.getElementById(containerId).innerHTML = this.calendarHeaderTemplate({days: calObject, tableHead: dniTyg, month: miesiace[indexMonth]});
+
+
+        //container.innerHTML = template;
     };
 
     lib.restLeftUpdate = function () {
