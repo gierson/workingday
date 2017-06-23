@@ -2,8 +2,8 @@
  * Created by gierek85 on 11.06.2017.
  */
 
-(function (root, undefined) {
-
+(function (root) {
+    "use strict";
     var lib = {};
     var helpers = {};
 
@@ -12,35 +12,32 @@
         return new Date(year, monthIndex, 0).getDate();
     };
 
-    // * easterForYear(2017)++           17.04     (poniedziałek)	Poniedziałek Wielkanocny
-    // * easterForYear(2017) + 50day     04.06     (niedziela)	    Zesłanie Ducha Świętego (Zielone Świątki)
-    // * easterForYear(2017) + 60day     15.06     (czwartek)	    Boże Ciało
+    // * easterForYear(2017)++ 17.04 (poniedziałek) Poniedziałek Wielkanocny
+    // * easterForYear(2017) + 50day 04.06 (niedziela) Zesłanie Ducha Świętego (Zielone Świątki)
+    // * easterForYear(2017) + 60day 15.06 (czwartek) Boże Ciało
     helpers.generateMovingHolidays = function(year) {
         var add = [0, 1, 49, 60];
         var holidays = [];
         var easterDay = lib.easter(year);
-
-        for(var i = 0; i < add.length; i++) {
+        add.forEach(function (day) {
             var easter = new Date(easterDay);
-            easter.setDate(easterDay.getDate() + add[i]);
-            holidays.push({indexMonth: easter.getMonth(), day: easter.getDate()})
-        }
+            easter.setDate(easterDay.getDate() + day);
+            holidays.push({indexMonth: easter.getMonth(), day: easter.getDate()});
+        });
         return holidays;
     };
 
     lib.init = function () {
-        this.version = "0.0.1";
-
-        if(document.getElementById('calendar-header-year-template') !== null && document.getElementById('calendar-header-template') !== null) {
-            this.calendarYearTemplate = root.Handlebars.compile(document.getElementById('calendar-header-year-template').innerHTML);
-            this.calendarHeaderTemplate = root.Handlebars.compile(document.getElementById('calendar-header-template').innerHTML);
-            this.aletrTemplate = root.Handlebars.compile(document.getElementById('aletr-template').innerHTML);
+        if(document.getElementById("calendar-header-year-template") !== null && document.getElementById("calendar-header-template") !== null) {
+            lib.calendarYearTemplate = root.Handlebars.compile(document.getElementById("calendar-header-year-template").innerHTML);
+            lib.calendarHeaderTemplate = root.Handlebars.compile(document.getElementById("calendar-header-template").innerHTML);
+            lib.aletrTemplate = root.Handlebars.compile(document.getElementById("aletr-template").innerHTML);
         }
 
-        this.dniTyg = ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'];
-        this.miesiace = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+        lib.dniTyg = ["pon.", "wt.", "śr.", "czw.", "pt.", "sob.", "niedz."];
+        lib.miesiace = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
 
-        this.settings = {
+        lib.settings = {
             businessDaysNumber: 5,
             defaultPermanentHolidays: [ // defaultPermanentHolidays: [] (month is a index ex[january: 0, february: 1]
                 { indexMonth: 0, day: 1 },
@@ -55,8 +52,8 @@
             ]
         };
 
-        this.storage = [];
-        this.restLeft = 29;
+        lib.storage = [];
+        lib.restLeft = 29;
         setTimeout(function () {
             lib.setUpEventListeners();
             lib.restLeftUpdate();
@@ -86,15 +83,15 @@
     // Should return true if given date is a working day.
     lib.isWorkingDay = function(year, indexMonth, day) {
         var date = new Date(year, indexMonth, day);
-        var businessDaysNumber = this.settings.businessDaysNumber;
-        var permanentHolidays = this.settings.defaultPermanentHolidays;
+        var businessDaysNumber = lib.settings.businessDaysNumber;
+        var permanentHolidays = lib.settings.defaultPermanentHolidays;
         var movingHolidays = helpers.generateMovingHolidays(year);
         var businessDays = [];
         businessDays.push.apply(businessDays, permanentHolidays);
         businessDays.push.apply(businessDays, movingHolidays);
 
         if(!Date.parse(year, indexMonth, day) || isNaN(date.getTime())) {
-            throw new TypeError('Bad input date');
+            throw new TypeError("Bad input date");
         }
         if(date.getDay() <= businessDaysNumber && date.getDay() > 0) {
             var detected = false;
@@ -104,7 +101,9 @@
                 }
             });
             return !detected;
-        } else return false;
+        } else {
+            return false;
+        }
     };
 
     lib.getLastWorkDayOfMonth = function(year, indexMonth) {
@@ -116,11 +115,11 @@
         }
     };
     lib.alertRender = function (type, message) {
-        document.getElementById('alert').innerHTML = this.aletrTemplate({type: type, message: message});
-        document.getElementById('alert').style.opacity = 1;
-        document.getElementById('alert').style.visibility = 'visible';
+        document.getElementById("alert").innerHTML = this.aletrTemplate({type: type, message: message});
+        document.getElementById("alert").style.opacity = 1;
+        document.getElementById("alert").style.visibility = "visible";
         setTimeout(function () {
-            document.getElementById('alert').style.opacity = 0;
+            document.getElementById("alert").style.opacity = 0;
         }, 3500);
     };
 
@@ -129,7 +128,8 @@
         var startingDay = new Date(year, indexMonth, 1).getDay()-1;
         var month = indexMonth + 1;
         var day = 1;
-        var addClass = '';
+        var addClass = "";
+        var addClass2 = "";
         var calObject = [];
         var calWeek = [];
 
@@ -144,20 +144,20 @@
                     });
                     if(this.isWorkingDay(year, indexMonth, day)) {
                         if(storedDay.length > 0) {
-                            addClass = 'addOne';
+                            addClass = "addOne";
                         } else {
-                            addClass = 'work'
+                            addClass = "work"
                         }
-                        addClass2 = '';
+                        addClass2 = "";
                     } else {
-                        addClass = 'holiday';
-                        addClass2 = 'offday';
+                        addClass = "holiday";
+                        addClass2 = "offday";
                     }
                     calWeek.push({position: j, dayNum: day, className: addClass, className2: addClass2, monthNum: month});
-                    addClass = '';
+                    addClass = "";
                     day++;
                 } else {
-                    calWeek.push({position: j, dayNum: '', className2: 'placeholder'});
+                    calWeek.push({position: j, dayNum: "", className2: "placeholder"});
                 }
             }
             calObject.push({row: i, data: calWeek});
@@ -170,16 +170,16 @@
     };
 
     lib.renderMonth = function (year, month, containerId) {
-        document.getElementById('year').innerHTML = this.calendarYearTemplate({year: year});
+        document.getElementById("year").innerHTML = this.calendarYearTemplate({year: year});
         document.getElementById(containerId).innerHTML = this.calendarHeaderTemplate(this.generateCalendarMonth(year, month));
         this.restLeftUpdate();
 
     };
 
     lib.restLeftUpdate = function () {
-        var restLeftCounter = document.getElementById('restLeft');
+        var restLeftCounter = document.getElementById("restLeft");
         var selected = lib.storage.length;
-        restLeftCounter.innerHTML = lib.restLeft - selected + ' days left';
+        restLeftCounter.innerHTML = lib.restLeft - selected + " days left";
     };
 
     lib.addToCalendar = function (data) {
@@ -199,56 +199,56 @@
     lib.generateCalendars = function (year, monts, container) {
         var cont = document.getElementById(container);
         var element;
-        var stored = root.firebase.database().ref('calendar/');
-        stored.once('value')
+        var stored = root.firebase.database().ref("calendar/");
+        stored.once("value")
             .then(function(snapshot) {
                 if(snapshot.val() === null) {
                     lib.storage = [];
-                    lib.alertRender('warning', 'Brak danych do wczytania!');
+                    lib.alertRender("warning", "Brak danych do wczytania!");
                 } else {
                     lib.storage = snapshot.val();
-                    lib.alertRender('success', 'Dane wczytane poprawnie!');
+                    lib.alertRender("success", "Dane wczytane poprawnie!");
                     }
                 monts.forEach(function (month) {
-                    element = document.createElement('div');
-                    element.setAttribute('id', month);
+                    element = document.createElement("div");
+                    element.setAttribute("id", month);
                     cont.appendChild(element);
                     lib.renderMonth(year, month, month);
                 });
 
-            }, function (error) {
-                lib.alertRender('danger', 'Błąd wczytywania danych!');
+            }, function () {
+                lib.alertRender("danger", "Błąd wczytywania danych!");
             }
             );
     };
 
-    lib.saveToLocalStorage = function () {
-        root.firebase.database().ref('calendar/').set(this.storage)
+    lib.saveToFirebase = function () {
+        root.firebase.database().ref("calendar/").set(this.storage)
             .then(function () {
-                lib.alertRender('success', 'Dane zapisane poprawnie!');
-            }, function (error) {
-                lib.alertRender('danger', 'Błąd zapisywania danych!');
+                lib.alertRender("success", "Dane zapisane poprawnie!");
+            }, function () {
+                lib.alertRender("danger", "Błąd zapisywania danych!");
             });
     };
 
     lib.setUpEventListeners = function() {
-        var tdDay = document.querySelector('#calendar-full');
-        var saveButton = document.querySelector('#save');
+        var tdDay = document.querySelector("#calendar-full");
+        var saveButton = document.querySelector("#save");
 
-        saveButton.addEventListener('click', function (event) {
-           lib.saveToLocalStorage(); 
+        saveButton.addEventListener("click", function () {
+           lib.saveToFirebase();
         });
 
-        tdDay.addEventListener('click', function(event) {
+        tdDay.addEventListener("click", function(event) {
             var elementClicked = event.target;
-            if(elementClicked.className === 'work') {
-                elementClicked.className = 'addOne';
-                lib.addToCalendar({month: Number(elementClicked.getAttribute('month')), day: Number(elementClicked.getAttribute('day'))});
+            if(elementClicked.className === "work") {
+                elementClicked.className = "addOne";
+                lib.addToCalendar({month: Number(elementClicked.getAttribute("month")), day: Number(elementClicked.getAttribute("day"))});
                 return true;
             }
-            if(elementClicked.className === 'addOne') {
-                elementClicked.className = 'work';
-                lib.deleteFromStorage({month: Number(elementClicked.getAttribute('month')), day: Number(elementClicked.getAttribute('day'))});
+            if(elementClicked.className === "addOne") {
+                elementClicked.className = "work";
+                lib.deleteFromStorage({month: Number(elementClicked.getAttribute("month")), day: Number(elementClicked.getAttribute("day"))});
                 console.log(elementClicked);
             }
         });
